@@ -1,4 +1,10 @@
+# dwm build files
 *.o
 dwm
 
+# Patch backup files
+*.orig
+*.rej
+
+# Editor backups
 *~
