@@ -20,6 +20,23 @@ static const char *colors[][3]      = {
     [SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
 };
 
+typedef struct {
+    const char *name;
+    const void *cmd;
+} Sp;
+const char *spcmd1[] = {"st", "-n", "spterm", "-g", "120x34", NULL };
+const char *spcmd2[] = {"st", "-n", "spfm", "-g", "144x41", "-e", "lf", NULL };
+const char *spcmd3[] = {"keepassxc", NULL };
+const char *spcmd4[] = {"alacritty", "--class", "spalacritty", "-o", "window.dimensions.columns=96", "window.dimensions.lines=27", NULL};
+
+static Sp scratchpads[] = {
+    /* name          cmd  */
+    {"spterm",      spcmd1},
+    {"splf",        spcmd2},
+    {"keepassxc",   spcmd3},
+    {"spalacritty", spcmd4},
+};
+
 /* tagging */
 static const char *tags[] = { "WWW", ">_", "III", "IV", "V", "VI", "VII", "-_- ", "SUCKS" };
 
@@ -31,6 +48,11 @@ static const Rule rules[] = {
     /* class      instance    title       tags mask     isfloating   monitor */
     { "Gimp",     NULL,       NULL,       0,            1,           -1 },
     { "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
+    /* Scratchpads */
+    { NULL,       "spterm",     NULL,     SPTAG(0),     1,           -1 },
+    { NULL,       "spfm",       NULL,     SPTAG(1),     1,           -1 },
+    { NULL,       "keepassxc",  NULL,     SPTAG(2),     1,           -1 },
+    { NULL,       "spalacritty",  NULL,   SPTAG(3),     1,           -1 },
 };
 
 /* layout(s) */
@@ -114,6 +136,11 @@ static const Key keys[] = {
     { 0,                     XF86XK_AudioRaiseVolume,  spawn,  {.v = volume_up } },
     { 0,                     XF86XK_MonBrightnessUp,   spawn,  {.v = brightness_up } },
     { 0,                     XF86XK_MonBrightnessDown, spawn,  {.v = brightness_down } },
+    /* Scratchpads keys */
+    { Mod1Mask,                 XK_o,           togglescratch,  {.ui = 1 } }, /* lf file manager*/
+    { MODKEY,                   XK_x,           togglescratch,  {.ui = 2 } }, /* keepassxc*/
+    { Mod1Mask,                 XK_backslash,   togglescratch,  {.ui = 3 } }, /* alacritty scratchpad */
+    { Mod1Mask,                 XK_Return,      togglescratch,  {.ui = 0 } }, /* st terminal */
 
 
     TAGKEYS(                        XK_1,                      0)
