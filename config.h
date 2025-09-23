@@ -53,9 +53,10 @@ static const Rule rules[] = {
     { "Alacritty",      NULL,         NULL,            0,         0,          1,           0,        -1 },
     { NULL,             NULL,         "Event Tester",  0,         0,          0,           1,        -1 }, /* xev */
     /* Scratchpads */
-    { NULL,            "spterm",      NULL,        SPTAG(0),	  1,          0,          -1,        -1 },
+    { NULL,            "spterm",      NULL,        SPTAG(0),	  1,          1,           0,        -1 },
     { NULL,            "spfm",        NULL,        SPTAG(1),	  1,          1,           0,        -1 },
-    { NULL,            "keepassxc",   NULL,        SPTAG(2),	  0,          0,           1,        -1 },
+    { NULL,            "keepassxc",   NULL,        SPTAG(2),	  1,          0,           1,        -1 },
+    { NULL,            "spalacritty", NULL,        SPTAG(3),	  1,          1,           0,        -1 },
 };
 
 /* layout(s) */
