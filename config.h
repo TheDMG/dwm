@@ -8,13 +8,13 @@ static const unsigned int snap      = 32;       /* snap pixel */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const int showbar            = 0;        /* 0 means no bar */
 static const int topbar             = 0;        /* 0 means bottom bar */
-static const char *fonts[]          = { "monospace:size=10" };
-static const char dmenufont[]       = "monospace:size=10";
-static const char col_gray1[]       = "#222222";
+static const char *fonts[]          = { "BigBlueTermPlus Nerd Font:size=10" };
+static const char dmenufont[]       = "BigBlueTermPlus Nerd Font:size=10";
+static const char col_gray1[]       = "#000000";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#005577";
+static const char col_cyan[]        = "#000000";
 static const char *colors[][3]      = {
     /*               fg         bg         border   */
     [SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
@@ -96,6 +96,7 @@ static const char *browser[]         = { "chromium", NULL };
 static const char *filemanager[]     = { "pcmanfm", NULL };
 
 static const char *mute[]            = { "amixer", "-q", "set", "Master", "toggle", NULL };
+static const char *max_vol[]         = { "amixer", "-q", "set", "Master", "100%", NULL };
 static const char *volume_up[]       = { "amixer", "-q", "set", "Master", "5%+", "unmute", NULL };
 static const char *volume_down[]     = { "amixer", "-q", "set", "Master", "5%- ", "unmute", NULL };
 static const char *brightness_up[]   = { "xbacklight", "-inc", "5", NULL };
@@ -134,8 +135,10 @@ static const Key keys[] = {
     { MODKEY,                       XK_o,         spawn,       {.v = filemanager } },
     { 0,                            XK_Print,     spawn,       SHCMD("maim ~/Pictures/screenshots/screens/screenshot-$(date +%F-%T).png") },
     { MODKEY,                       XK_Print,     spawn,       SHCMD("maim -s ~/Pictures/screenshots/regions/screenshot-$(date +%F-%T).png") },
+    { 0,                            XK_Scroll_Lock, spawn,     SHCMD("setxkbmap -query | grep -q 'us' && setxkbmap ar || setxkbmap us") },
 
     { 0,                     XF86XK_AudioMute, spawn,          {.v = mute } },
+    { MODKEY,                XK_KP_Add,        spawn,          {.v = max_vol } },
     { 0,                     XF86XK_AudioLowerVolume,  spawn,  {.v = volume_down } },
     { 0,                     XF86XK_AudioRaiseVolume,  spawn,  {.v = volume_up } },
     { 0,                     XF86XK_MonBrightnessUp,   spawn,  {.v = brightness_up } },
