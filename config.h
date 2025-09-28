@@ -137,6 +137,8 @@ static const Key keys[] = {
     { MODKEY,                       XK_Print,     spawn,       SHCMD("maim -s ~/Pictures/screenshots/regions/screenshot-$(date +%F-%T).png") },
     { 0,                            XK_Scroll_Lock, spawn,     SHCMD("setxkbmap -query | grep -q 'us' && setxkbmap ar || setxkbmap us") },
 
+    { MODKEY,                       XK_Escape,     spawn,      SHCMD("~/.local/bin/powersys") },
+
     { 0,                     XF86XK_AudioMute, spawn,          {.v = mute } },
     { MODKEY,                XK_KP_Add,        spawn,          {.v = max_vol } },
     { 0,                     XF86XK_AudioLowerVolume,  spawn,  {.v = volume_down } },
