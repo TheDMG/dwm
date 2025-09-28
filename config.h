@@ -8,17 +8,17 @@ static const unsigned int snap      = 32;       /* snap pixel */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const int showbar            = 0;        /* 0 means no bar */
 static const int topbar             = 0;        /* 0 means bottom bar */
-static const char *fonts[]          = { "BigBlueTermPlus Nerd Font:size=8" };
-static const char dmenufont[]       = "BigBlueTermPlus Nerd Font:size=8";
-static const char col_gray1[]       = "#c0c0c0";
-static const char col_gray2[]       = "#d3d7cf";
-static const char col_gray3[]       = "#000000";
-static const char col_gray4[]       = "#c0c0c0";
-static const char col_cyan[]        = "#05056d";
+static const char *fonts[]          = { "BigBlueTermPlus Nerd Font:size=10" };
+static const char dmenufont[]       = "BigBlueTermPlus Nerd Font:size=10";
+static const char col_gray1[]       = "#000000";
+static const char col_gray2[]       = "#444444";
+static const char col_gray3[]       = "#bbbbbb";
+static const char col_gray4[]       = "#eeeeee";
+static const char col_cyan[]        = "#000000";
 static const char *colors[][3]      = {
     /*               fg         bg         border   */
-    [SchemeNorm] = { col_gray3, col_gray1, col_cyan },
-    [SchemeSel]  = { col_gray4, col_cyan,  col_gray2  },
+    [SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
+    [SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
 };
 
 typedef struct {
