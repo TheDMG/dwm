@@ -1,0 +1,124 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+readonly SCRIPT_NAME="$(basename "$0")"
+readonly DMENU_PROMPT="System Action"
+
+readonly ICON_SHUTDOWN="🔴"
+readonly ICON_REBOOT="🔄"
+readonly ICON_DISPLAY_OFF="📺"
+
+detect_init_system() {
+    local init_path
+    init_path="$(readlink -f /sbin/init 2>/dev/null || echo "")"
+    
+    case "$init_path" in
+        *systemd*)
+            echo "systemctl"
+            ;;
+        *)
+            echo "loginctl"
+            ;;
+    esac
+}
+
+show_error() {
+    local message="$1"
+    if command -v notify-send >/dev/null 2>&1; then
+        notify-send "Error" "$message" -u critical
+    fi
+    echo "Error: $message" >&2
+}
+
+confirm_action() {
+    local action="$1"
+    local confirmation
+    
+    confirmation="$(printf "No\nYes" | dmenu -i -p "Confirm $action?")"
+    
+    [[ "$confirmation" == "Yes" ]]
+}
+
+execute_command() {
+    local cmd="$1"
+    shift
+    local args="$@"
+    
+    if command -v "$cmd" >/dev/null 2>&1; then
+        "$cmd" $args
+    else
+        show_error "Command '$cmd' not found"
+        return 1
+    fi
+}
+
+shutdown_system() {
+    local ctl="$1"
+    
+    if confirm_action "shutdown"; then
+        echo "Initiating system shutdown..."
+        execute_command "$ctl" poweroff -i
+    fi
+}
+
+reboot_system() {
+    local ctl="$1"
+    
+    if confirm_action "reboot"; then
+        echo "Initiating system reboot..."
+        execute_command "$ctl" reboot -i
+    fi
+}
+
+display_off() {
+    if command -v xset >/dev/null 2>&1; then
+        echo "Turning display off..."
+        execute_command xset dpms force off
+    else
+        show_error "xset not found. Cannot control display."
+        return 1
+    fi
+}
+
+show_menu() {
+    local options=(
+        "${ICON_SHUTDOWN} Shutdown"
+        "${ICON_REBOOT} Reboot"
+        "${ICON_DISPLAY_OFF} Display Off"
+    )
+    
+    printf '%s\n' "${options[@]}" | dmenu -i -p "$DMENU_PROMPT:"
+}
+
+main() {
+    if ! command -v dmenu >/dev/null 2>&1; then
+        show_error "dmenu is not installed"
+        exit 1
+    fi
+    
+    local system_ctl
+    system_ctl="$(detect_init_system)"
+    
+    local selection
+    selection="$(show_menu)" || exit 0
+    
+    case "$selection" in
+        *"Shutdown"*)
+            shutdown_system "$system_ctl"
+            ;;
+        *"Reboot"*)
+            reboot_system "$system_ctl"
+            ;;
+        *"Display Off"*)
+            display_off
+            ;;
+        *)
+            exit 0
+            ;;
+    esac
+}
+
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+    main "$@"
+fi

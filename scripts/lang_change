@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+LANGUAGES=("us" "ara")
+current=$(setxkbmap -query | grep layout | awk '{print $2}')
+
+current_index=0
+for i in "${!LANGUAGES[@]}"; do
+    if [[ "${LANGUAGES[$i]}" == "$current" ]]; then
+        current_index=$i
+        break
+    fi
+done
+
+next=$(( (current_index + 1) % ${#LANGUAGES[@]} ))
+
+setxkbmap "${LANGUAGES[$next]}"
+
+command -v notify-send &>/dev/null && notify-send -t 800 "Layout: ${LANGUAGES[$next]}"
